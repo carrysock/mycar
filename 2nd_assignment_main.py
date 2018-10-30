@@ -24,38 +24,32 @@ class myCar(object):
     # =======================================================================
     def car_startup(self):
         # implement the assignment code here
+        self.car.accelerator.go_forward(15)
         while True:
-
-            data =self.car.SEN040134_Tracking.read_digital()
+            data =self.car.line_detector.read_digital()
             if data == [0,0,0,0,0]:
                 time.sleep(1)
-                afterdata =self.car.SEN040134_Tracking.read_digital()
+                afterdata =self.car.line_detector.read_digital()
                 if afterdata == [0,0,0,0,0]:
                     self.car.drive_parking()
                     break
-
-            if self.car.SEN040134_Tracking.is_in_line(data) == True:
-                self.car.accelerator.go_forward(30)
-                if self.car.SEN040134_Tracking.in_center(data) == True:
-                    continue
-                else:
-                    if data == [0,0,1,0,0]:
-                        self.car.accelerator.steering.center_alignment()
-                    elif data == [1,0,0,0,0]:
-                        self.car.accelerator.steering.turn_left(35)
-                    elif data == [1,1,0,0,0]:
-                        self.car.accelerator.steering.turn_left(30)
-                    elif data == [0,1,0,0,0]:
-                        self.car.accelerator.steering.turn_left(10)
-                    elif data == [0,0,0,0,1]:
-                        self.car.accelerator.steering.turn_right(35)
-                    elif data == [0,0,0,1,1]:
-                        self.car.accelerator.steering.turn_right(30)
-                    elif data == [0,0,0,1,0]:
-                        self.car.accelerator.steering.turn_right(10)
+            if data == [0,0,1,0,0]:
+                self.car.steering.center_alignment()
+            elif data == [1,0,0,0,0]:
+                self.car.steering.turn_left(35)
+            elif data == [1,1,0,0,0]:
+                self.car.steering.turn_left(30)
+            elif data == [0,1,0,0,0]:
+                self.car.steering.turn_left(10)
+            elif data == [0,0,0,0,1]:
+                self.car.steering.turn_right(35)
+            elif data == [0,0,0,1,1]:
+                self.car.steering.turn_right(30)
+            elif data == [0,0,0,1,0]:
+                self.car.steering.turn_right(10)
 
             time.sleep(0.5)
-
+        pass
 
 if __name__ == "__main__":
     try:
